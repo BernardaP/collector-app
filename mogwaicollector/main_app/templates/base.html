@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mogwai Collector</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet"  type="text/css" href=" {% static 'css/style.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+    <header>
+     
+        <nav>
+          <div class="nav-wrapper teal accent-4">
+            <a href="{% url 'index' %}" class="brand-logo">&nbsp;&nbsp;MogwaiCollector</a>
+            <ul class="right hide-on-med-and-down">
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+            </ul> 
+            <ul class="sidenav" id="mobile-demo">
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+            </ul>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+                 
+          </div>
+        </nav>
+        
+    
+    </header>
+    <main class="container">
+      {% block content %}
+      {% endblock %}
+    </main>
+    <footer id="footer" class="page-footer teal accent-4">
+      <div class="right">All Rights Reserved, &copy; 2019 Mogwai Collector &nbsp;</div>
+    </footer>
+
+   
+    <script src={% static 'js/main.js' %}></script>
+</body>
+</html>
