@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+    <h1>Mogwai Collector</h1>
+    <hr />
+
+    <div class="row">
+        <h4>Meet the Mogwais</h4>
+        <div clas="col s12">
+            <img class="responsive-img" src="{% static 'images/gremlins.jpg' %}" alt="gremlins">
+        </div>
+        <div clas="col s12">
+            <img class="responsive-img" src="{% static 'images/more_gremlins.jpg' %}" alt="gremlins">
+        </div>
+
+
+    </div>
+    
+
+    
+    
+{% endblock %}  
