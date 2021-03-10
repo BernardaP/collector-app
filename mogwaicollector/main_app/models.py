@@ -31,7 +31,7 @@ class Mogwai(models.Model):
 
 class Feeding(models.Model):
     date = models.DateField('Feeding date')
-    # time = models.TimeField()
+    time = models.TimeField()
     meal = models.CharField(
         max_length=1,
         choices=MEALS,
