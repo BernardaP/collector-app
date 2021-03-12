@@ -11,13 +11,13 @@ M.Datepicker.init(dateEl, {
   format: 'yyyy-mm-dd',
   defaultDate: new Date(),
   setDefaultDate: true,
-  autoClose: true
+  autoClose: false
 });
 
 // TimePicker
 const timeEl = document.getElementById('id_time');
 M.Timepicker.init(timeEl, {
-  twelveHour: true,
+  twelveHour: false,
   defaultTime: 'now',
-  autoClose: true
+  autoClose: false
 });

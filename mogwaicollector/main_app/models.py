@@ -1,5 +1,7 @@
 from django.db import models
-from datetime import date
+from datetime import date, time
+from django.contrib.auth.models import User
+from datetime import datetime
 
 MEALS = (
     ('B', 'Breakfast'),
@@ -22,12 +24,24 @@ class Mogwai(models.Model):
     description = models.CharField(max_length=250)
     age = models.IntegerField()  
     toys = models.ManyToManyField(Toy, blank=True)  
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
     def __str__(self):
         return f"{self.name}"
 
     def fed_for_today(self):
+        # print((date.today()) )
         return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
+
+    def no_fed(self):
+        now = datetime.now()
+        today_midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_6am = now.replace(hour=5, minute=0, second=0, microsecond=0)
+        # print(now >= today_midnight and now < today_6am)
+        return not(now >= today_midnight and now < today_6am)
+    #    today_midnight = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    #    return self.feeding_set.filter(time=datetime.now()).count() >= today_midnight
+    
 
 class Feeding(models.Model):
     date = models.DateField('Feeding date')

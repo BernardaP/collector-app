@@ -20,11 +20,21 @@
   </div>
   
   <div class="col s12 m6">
-    <form method="POST" action=" {% url 'add_feeding' mogwai.id %}">
+    {% if mogwai.no_fed %}
+      <form method="POST" action=" {% url 'add_feeding' mogwai.id %}">
+        {% csrf_token %} 
+        {{ feeding_form.as_p }}
+        <input type="submit" class="btn" value="Add Feeding">
+      </form>
+    {% else %}
+     <div class="card-panel red-text center-align">{{mogwai.name}} cannot eat this late. DO NOT FEED IT!!</div>
+    {% endif %}
+
+    {% comment %} <form method="POST" action=" {% url 'add_feeding' mogwai.id %}">
       {% csrf_token %} 
       {{ feeding_form.as_p }}
       <input type="submit" class="btn" value="Add Feeding">
-    </form>
+    </form> {% endcomment %}
     <br>
     {% if mogwai.fed_for_today %}
       <div class="card-panel teal-text center-align">{{mogwai.name}} has been fed all meals for today</div>
@@ -49,13 +59,13 @@
 </div>   
 <hr>
 <div class="row">
-  <div class="col s6">
+  <div class="col s12 m6">
     <h3>{{ mogwai.name }}'s Toys</h3>
     {% if mogwai.toys.count %}
       {% for toy in mogwai.toys.all %}
         <div class="card">
-          <div class="card-content">
-            <span class="card-title">
+          <div class="card-content blue-grey lighten-3">
+            <span class="card-text">
               A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
             </span>
           </div>
@@ -72,15 +82,15 @@
     {% endif %}
   </div>
   <!-- Available toys will come after this line -->
-  <div class="col s6">
+  <div class="col s12 m6">
       <h3>Available Toys</h3>
       {% if toys.count %}
         {% for toy in toys.all %}
           <div class="card">
-            <div class="card-content">
-              <span class="card-title">
+            <div class="card-content blue-grey lighten-3">
+              <span class="card-text">
                 A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
-              </span>
+              </span>    
             </div>
             <div class="card-action">
               <form action=" {% url 'assoc_toy' mogwai.id toy.id %} " method="post">

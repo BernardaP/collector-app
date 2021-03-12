@@ -18,14 +18,28 @@
      
         <nav>
           <div class="nav-wrapper teal accent-4">
-            <a href="{% url 'index' %}" class="brand-logo">&nbsp;&nbsp;MogwaiCollector</a>
+            <a href="{% url 'home' %}" class="brand-logo">&nbsp;&nbsp;MogwaiCollector</a>
             <ul class="right hide-on-med-and-down">
               <li><a href="{% url 'about' %}">About</a></li>
+              {% if user.is_authenticated %}
+              <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
               <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+              <li><a href=" {% url 'logout' %}">Log Out</a></li>
+              {% else %}
+              <li><a href="{% url 'signup' %}">Sign Up</a></li>
+              <li><a href="{% url 'login' %}">Log In</a></li>
+              {% endif %}
             </ul> 
             <ul class="sidenav" id="mobile-demo">
               <li><a href="{% url 'about' %}">About</a></li>
+              {% if user.is_authenticated %}
+              <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
               <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+              <li><a href=" {% url 'logout' %}">Log Out</a></li>
+              {% else %}
+              <li><a href="{% url 'signup' %}">Sign Up</a></li>
+              <li><a href="{% url 'login' %}">Log In</a></li>
+              {% endif %}
             </ul>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger">
               <i class="material-icons">menu</i>
