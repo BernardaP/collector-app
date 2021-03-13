@@ -6,7 +6,7 @@ from .models import Mogwai, Toy
 from .forms import FeedingForm, MogwaiForm
 from datetime import date, time
 # Create your views here.
-from django.http import HttpResponse
+
 
 def home(request):
   return render(request, 'home.html')
@@ -32,6 +32,22 @@ def mogwais_new(request):
     return redirect('index')
   else:
     return render(request, 'mogwais/new.html', {'mogwai_form': mogwai_form})  
+
+@login_required
+def mogwais_edit(request, mogwai_id):
+  mogwai = Mogwai.objects.get(id=mogwai_id)
+  mogwai_form = MogwaiForm(request.POST or None, instance=mogwai)
+  if request.POST and mogwai_form.is_valid():
+    mogwai_form.save()
+    return redirect('detail', mogwai_id= mogwai_id)
+  else:
+    return render(request, 'mogwais/edit.html', {'mogwai': mogwai, 'mogwai_form': mogwai_form})
+
+@login_required
+def mogwais_delete(request, mogwai_id):
+  Mogwai.objects.get(id=mogwai_id).delete()
+  return redirect('index')
+
 
 @login_required
 def mogwais_detail(request, mogwai_id):
