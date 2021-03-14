@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Mogwai list</h1>
+<h1 class="brown-text text-lighten-1">Mogwai list</h1>
 
 {% for mogwai in mogwais  %}
-    <div class="card">
-        <a href="{% url 'detail' mogwai.id %}">  
-            <div class="card-content">
-                <span class="card-title">{{ mogwai.name }}</span>
+    <div class="card" >
+        <a class="brown-text " href="{% url 'detail' mogwai.id %}">  
+            <div class="card-content" id="index-card">
+                <span class="card-title title">{{ mogwai.name }}</span>
                 <p>Character: {{ mogwai.character }}</p>
                 <p>Description: {{ mogwai.description }}</p>
                 {% if mogwai.age > 0 %}

@@ -8,7 +8,21 @@ body {
 main {
 flex: 1 0 auto;
 }
-
+.brand-logo, .title, h1, h3 {
+  font-family: 'Schoolbell', cursive;
+}
+.sidenav li>a {
+  color: white;
+}
+#crd-actn-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#photo-btn{
+  display: flex;
+  flex-direction: column;
+}
 footer {
   padding-top: 0;
   text-align: right;
@@ -33,9 +47,12 @@ h4 {
   font-size: 15px;
 }
 .card-text {
- font-size: 17px;
+ font-size: 15px;
 }
-
+#index-card:hover{
+  background-color: #afb42b;
+  color: white;
+}
 /* MEDIA QUERIES */
 @media only screen and (min-width: 768px) {
   #home-images {

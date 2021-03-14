@@ -2,9 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from .models import Mogwai, Toy
+import uuid
+import boto3
+from .models import Mogwai, Toy, Photo
 from .forms import FeedingForm, MogwaiForm
 from datetime import date, time
+from django.http import HttpResponse
+from django.contrib import messages
+
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'cat-collector-sei-bp'
+
 # Create your views here.
 
 
@@ -53,9 +61,6 @@ def mogwais_delete(request, mogwai_id):
 def mogwais_detail(request, mogwai_id):
   # retrieve a single cat using the ID
   mogwai = Mogwai.objects.get(id=mogwai_id)
-  # print(date.today())
-  # print(time)
-  # print(mogwai.feeding_set.filter(date=date.today()).count())
   toys_mogwai_doesnt_have = Toy.objects.exclude(id__in = mogwai.toys.all().values_list('id'))
   feeding_form = FeedingForm()
   context = {
@@ -68,10 +73,24 @@ def mogwais_detail(request, mogwai_id):
 @login_required
 def add_feeding(request, mogwai_id):
   form = FeedingForm(request.POST)
-  if form.is_valid():
+  print(request.POST)
+  hour = request.POST.get('time')
+  hour = int(hour[0:2])
+  after_midnight = hour < 5  
+  print(after_midnight)
+
+  print(hour)
+  # message = ''
+  if form.is_valid() and not after_midnight:
+   
     new_feeding = form.save(commit=False)
     new_feeding.mogwai_id = mogwai_id
     new_feeding.save()
+    return redirect('detail', mogwai_id=mogwai_id)
+  else:
+      # return HttpResponse('To late to feed the Mogawai.')
+    # print('If you alredy did it, YOU ARE IN SERIOUS TROUBLE') 
+    messages.warning(request, "YOU ARE IN SERIOUS DANGER, It's too late to feed the Mogawai !!!") 
   return redirect('detail', mogwai_id=mogwai_id)
 
 @login_required
@@ -99,3 +118,19 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+@login_required
+def add_photo(request, mogwai_id):
+  photo_file = request.FILES.get('photo-file', None)
+  if photo_file:
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+    try:
+        s3.upload_fileobj(photo_file, BUCKET, key)
+        url = f"{S3_BASE_URL}{BUCKET}/{key}"
+        # Assign to mogwai_id or mogwai (if you have a mogwai object)
+        photo = Photo(url=url, mogwai_id=mogwai_id)
+        photo.save()
+    except:
+        print('An error occurred uploading file to S3')
+  return redirect('detail', mogwai_id=mogwai_id)

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>Edit A Mogwai</h1>
+  <h1 class="brown-text text-lighten-1">Edit A Mogwai</h1>
 
   <form method="POST" action="{% url 'edit' mogwai.id %}">
     {% csrf_token %}
     {{ mogwai_form.as_p }}
-    <input type="submit" class="btn" value="Edit Mogwai">
+    <input type="submit" class="btn lime darken-2" value="Edit Mogwai">
   </form>
 {% endblock content %}

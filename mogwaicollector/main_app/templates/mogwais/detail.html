@@ -1,53 +1,79 @@
-
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Mogwai Details</h1>
+
 
 <div class="row">
   <div class="col s12 m6">
+    <h1 class="brown-text text-lighten-1">Mogwai Details</h1>
     <div class="card">
       <div class="card-content">
-        <span class="card-title">{{ mogwai.name }} </span>
+        <span class="card-title title"> {{ mogwai.name }} </span>
           <p>Description: {{ mogwai.description }}</p>
           {% if mogwai.age > 0 %}
           <p>Age: {{ mogwai.age }}</p>
           {% else %}
-          <p>Age: Kitten</p>
+          <p>Age: Pup</p>
           {% endif %}
       </div>
-      <div class="card-action">
-        <a href="{% url 'edit' mogwai.id %}">Edit</a>
+      <div class="card-action" id="crd-actn-details">
+        <a class="btn lime darken-2" href="{% url 'edit' mogwai.id %}">Edit</a>
         <form method="POST" action="{% url 'delete' mogwai.id %}">
           {% csrf_token %}
-          <input type="submit" class="btn" value="Delete">
+          <input type="submit" class="btn lime darken-2" value="Delete">
         </form>
       </div>
     </div>
-
-
+    {% for photo in mogwai.photo_set.all %}
+      <img class="responsive-img card-panel" src="{{photo.url}}" alt="{{mogwai.name}}">
+    {% empty %}
+      <div class="card-panel brown-text center-align">No Photos Uploaded</div>
+    {% endfor %}
+    <div class="card">
+     <form action=" {% url 'add_photo' mogwai.id %}" enctype="multipart/form-data" method="POST" class="card-content">
+      <div class="file-field input-field">
+        <div class="btn brown">
+          <span>File</span>
+          {% csrf_token %}
+          <input type="file" name="photo-file" id="photo-file">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+      <div class="card-action" id="photo-btn">
+        <input type="submit" class="btn lime darken-2" value="Upload Photo">
+      </div>
+    </form>
+    </div>
+   
 
   </div>
   
   <div class="col s12 m6">
-    {% if mogwai.no_fed %}
+    <h1 class="brown-text text-lighten-1">Feeding Log</h1>
+    {% if mogwai.no_feeding_after_midnight %}
       <form method="POST" action=" {% url 'add_feeding' mogwai.id %}">
         {% csrf_token %} 
         {{ feeding_form.as_p }}
-        <input type="submit" class="btn" value="Add Feeding">
+        <input type="submit" class="btn lime darken-2" value="Add Feeding">
       </form>
     {% else %}
      <div class="card-panel red-text center-align">{{mogwai.name}} cannot eat this late. DO NOT FEED IT!!</div>
     {% endif %}
+    <br>
+    
+    {% if  messages %}
+      <div class="messages card-panel red darken-1 white-text center-align">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-    {% comment %} <form method="POST" action=" {% url 'add_feeding' mogwai.id %}">
-      {% csrf_token %} 
-      {{ feeding_form.as_p }}
-      <input type="submit" class="btn" value="Add Feeding">
-    </form> {% endcomment %}
     <br>
     {% if mogwai.fed_for_today %}
-      <div class="card-panel teal-text center-align">{{mogwai.name}} has been fed all meals for today</div>
+      <div class="card-panel brown-text center-align">{{mogwai.name}} has been fed all meals for today</div>
     {% else %}
       <div class="card-panel red-text center-align">{{mogwai.name}} might be hungry</div>
     {% endif %}
@@ -70,42 +96,42 @@
 <hr>
 <div class="row">
   <div class="col s12 m6">
-    <h3>{{ mogwai.name }}'s Toys</h3>
+    <h1 class="brown-text text-lighten-1">{{ mogwai.name }}'s Toys</h1>
     {% if mogwai.toys.count %}
       {% for toy in mogwai.toys.all %}
         <div class="card">
-          <div class="card-content blue-grey lighten-3">
-            <span class="card-text">
-              A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+          <div class="card-content brown lighten-1">
+            <span class="card-text white-text">
+              A {{ toy.color }} {{ toy.name }}
             </span>
           </div>
           <div class="card-action">
               <form action=" {% url 'remove_toy' mogwai.id toy.id %} " method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn">Remove</button>
+                <button type="submit" class="btn lime darken-2">Remove</button>
               </form>
             </div>
         </div>
       {% endfor %}
     {% else %}
-      <h5>No Toys :(</h5>
+      <div class="card-panel brown-text center-align">This Mogwai does not have any toys</div> 
     {% endif %}
   </div>
-  <!-- Available toys will come after this line -->
+  
   <div class="col s12 m6">
-      <h3>Available Toys</h3>
+      <h1 class="brown-text text-lighten-1">Available Toys</h1>
       {% if toys.count %}
         {% for toy in toys.all %}
           <div class="card">
-            <div class="card-content blue-grey lighten-3">
-              <span class="card-text">
-                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+            <div class="card-content brown lighten-1">
+              <span class="card-text white-text">
+                A {{ toy.color }} {{ toy.name }}
               </span>    
             </div>
             <div class="card-action">
               <form action=" {% url 'assoc_toy' mogwai.id toy.id %} " method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn">Add</button>
+                <button type="submit" class="btn lime darken-2">Add</button>
               </form>
             </div>
           </div>

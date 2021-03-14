@@ -33,14 +33,12 @@ class Mogwai(models.Model):
         # print((date.today()) )
         return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
 
-    def no_fed(self):
+    def no_feeding_after_midnight(self):
         now = datetime.now()
         today_midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
         today_6am = now.replace(hour=5, minute=0, second=0, microsecond=0)
-        # print(now >= today_midnight and now < today_6am)
         return not(now >= today_midnight and now < today_6am)
-    #    today_midnight = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    #    return self.feeding_set.filter(time=datetime.now()).count() >= today_midnight
+    
     
 
 class Feeding(models.Model):
@@ -59,3 +57,12 @@ class Feeding(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    mogwai = models.ForeignKey(Mogwai, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for mogwai_id: {self.mogwai_id} @{self.url}"
+    
