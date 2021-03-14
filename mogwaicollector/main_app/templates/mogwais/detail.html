@@ -46,8 +46,6 @@
       </div>
     </form>
     </div>
-   
-
   </div>
   
   <div class="col s12 m6">
@@ -114,7 +112,7 @@
         </div>
       {% endfor %}
     {% else %}
-      <div class="card-panel brown-text center-align">This Mogwai does not have any toys</div> 
+      <div class="card-panel brown-text center-align">{{mogwai.name}} does not have any toys</div> 
     {% endif %}
   </div>
   
@@ -137,9 +135,9 @@
           </div>
         {% endfor %}
       {% else %}
-        <h5>{{mogwai.name}} Already Has All Toys Available</h5>
+        <div class="card-panel brown-text center-align">{{mogwai.name}} already has all Toys available</div>
       {% endif %}
-    </div>
+  </div>
 
 {% endblock content %}
 

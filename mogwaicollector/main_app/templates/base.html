@@ -19,51 +19,47 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
-    <header>
-     
-        <nav>
-          <div class="nav-wrapper brown">
-            <a href="{% url 'home' %}" class="brand-logo">&nbsp;&nbsp;Mogwai Collector</a>
-            <ul class="right hide-on-med-and-down">
-              <li><a href="{% url 'about' %}">About</a></li>
-              {% if user.is_authenticated %}
-              <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
-              <li><a href="{% url 'index' %}">View all Mogwais</a></li>
-              <li><a href=" {% url 'logout' %}">Log Out</a></li>
-              {% else %}
-              <li><a href="{% url 'signup' %}">Sign Up</a></li>
-              <li><a href="{% url 'login' %}">Log In</a></li>
-              {% endif %}
-            </ul> 
-            <ul class="sidenav lime darken-2" id="mobile-demo">
-              <li><a href="{% url 'about' %}">About</a></li>
-              {% if user.is_authenticated %}
-              <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
-              <li><a href="{% url 'index' %}">View all Mogwais</a></li>
-              <li><a href=" {% url 'logout' %}">Log Out</a></li>
-              {% else %}
-              <li><a href="{% url 'signup' %}">Sign Up</a></li>
-              <li><a href="{% url 'login' %}">Log In</a></li>
-              {% endif %}
-            </ul>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger">
-              <i class="material-icons">menu</i>
-            </a>
-                 
-          </div>
-        </nav>
-        
-    
-    </header>
-    <main class="container">
-      {% block content %}
-      {% endblock %}
-    </main>
-    <footer id="footer" class="page-footer brown">
-      <div class="right">All Rights Reserved, &copy; 2019 Mogwai Collector &nbsp;</div>
-    </footer>
+  <header>
+    <nav>
+      <div class="nav-wrapper brown">
+        <a href="{% url 'home' %}" class="brand-logo">&nbsp;&nbsp;Mogwai Collector</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="{% url 'about' %}">About</a></li>
+          {% if user.is_authenticated %}
+          <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
+          <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+          <li><a href=" {% url 'logout' %}">Log Out</a></li>
+          {% else %}
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          <li><a href="{% url 'login' %}">Log In</a></li>
+          {% endif %}
+        </ul> 
+        <ul class="sidenav lime darken-2" id="mobile-demo">
+          <li><a href="{% url 'about' %}">About</a></li>
+          {% if user.is_authenticated %}
+          <li><a href=" {% url 'new' %} ">Add a Mogwai</a></li>
+          <li><a href="{% url 'index' %}">View all Mogwais</a></li>
+          <li><a href=" {% url 'logout' %}">Log Out</a></li>
+          {% else %}
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          <li><a href="{% url 'login' %}">Log In</a></li>
+          {% endif %}
+        </ul>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+          <i class="material-icons">menu</i>
+        </a>       
+      </div>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer id="footer" class="page-footer brown">
+    <div class="right">All Rights Reserved, &copy; 2019 Mogwai Collector &nbsp;</div>
+  </footer>
 
-   
-    <script src={% static 'js/main.js' %}></script>
+  
+  <script src={% static 'js/main.js' %}></script>
 </body>
 </html>

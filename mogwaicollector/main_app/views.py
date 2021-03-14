@@ -7,7 +7,6 @@ import boto3
 from .models import Mogwai, Toy, Photo
 from .forms import FeedingForm, MogwaiForm
 from datetime import date, time
-from django.http import HttpResponse
 from django.contrib import messages
 
 S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
@@ -15,18 +14,16 @@ BUCKET = 'cat-collector-sei-bp'
 
 # Create your views here.
 
-
 def home(request):
   return render(request, 'home.html')
 
 
 def about(request):
   return render(request, 'about.html')
-  # return HttpResponse('<h1>About the CatCollector</h1>')
+
 
 @login_required
 def mogwais_index(request):
-  # retrieves all cats from DB
   mogwais = Mogwai.objects.filter(user=request.user)
   return render(request, 'mogwais/index.html', {'mogwais': mogwais})
 
@@ -59,7 +56,6 @@ def mogwais_delete(request, mogwai_id):
 
 @login_required
 def mogwais_detail(request, mogwai_id):
-  # retrieve a single cat using the ID
   mogwai = Mogwai.objects.get(id=mogwai_id)
   toys_mogwai_doesnt_have = Toy.objects.exclude(id__in = mogwai.toys.all().values_list('id'))
   feeding_form = FeedingForm()
@@ -73,24 +69,16 @@ def mogwais_detail(request, mogwai_id):
 @login_required
 def add_feeding(request, mogwai_id):
   form = FeedingForm(request.POST)
-  print(request.POST)
   hour = request.POST.get('time')
   hour = int(hour[0:2])
   after_midnight = hour < 5  
-  print(after_midnight)
-
-  print(hour)
-  # message = ''
   if form.is_valid() and not after_midnight:
-   
     new_feeding = form.save(commit=False)
     new_feeding.mogwai_id = mogwai_id
     new_feeding.save()
     return redirect('detail', mogwai_id=mogwai_id)
   else:
-      # return HttpResponse('To late to feed the Mogawai.')
-    # print('If you alredy did it, YOU ARE IN SERIOUS TROUBLE') 
-    messages.warning(request, "YOU ARE IN SERIOUS DANGER, It's too late to feed the Mogawai !!!") 
+    messages.warning(request, "YOU ARE IN SERIOUS DANGER, It's too late to feed the Mogawai!!!") 
   return redirect('detail', mogwai_id=mogwai_id)
 
 @login_required

@@ -30,7 +30,6 @@ class Mogwai(models.Model):
         return f"{self.name}"
 
     def fed_for_today(self):
-        # print((date.today()) )
         return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
 
     def no_feeding_after_midnight(self):
